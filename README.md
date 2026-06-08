@@ -129,10 +129,21 @@ Four tables in Supabase PostgreSQL:
 
 ## Dashboard Screenshots
 
-> Add screenshots here after running the app locally.
-> Recommended: one screenshot of the full dashboard, one of the filters in use.
+# All Teams View
+![All Teams](screenshots/Screenshot 2026-06-07 at 11.21.31 PM.png)
 
----
+# Home vs Away Win Rate (%) & Match Results
+![Home vs Away Win Rate (%) & Match Results](screenshots/Screenshot 2026-06-07 at 11.21.39 PM.png)
+
+# League Standings
+![League Standings](screenshots/Screenshot 2026-06-07 at 11.21.47 PM.png)
+
+# Team Filter View
+![Team Filter](screenshots/Screenshot 2026-06-07 at 11.22.06 PM.png)
+
+# Team Filter: Home vs Away Win Rate (%) & Match Results
+![Team Filter: Home vs Away Win Rate (%) & Match Results](screenshots/Screenshot 2026-06-07 at 11.23.20 PM.png)
+
 
 ## Data Source
 
