@@ -1,0 +1,21 @@
+position,team_name,played,won,draw,lost,points,goals_for,goals_against,goal_difference,points_per_game,win_rate_pct,goals_per_game
+1,Arsenal FC,38,26,7,5,85,71,27,44,2.24,68.4,1.87
+2,Manchester City FC,38,23,9,6,78,77,35,42,2.05,60.5,2.03
+3,Manchester United FC,38,20,11,7,71,69,50,19,1.87,52.6,1.82
+4,Aston Villa FC,38,19,8,11,65,56,49,7,1.71,50.0,1.47
+5,Liverpool FC,38,17,9,12,60,63,53,10,1.58,44.7,1.66
+6,AFC Bournemouth,38,13,18,7,57,58,54,4,1.5,34.2,1.53
+7,Sunderland AFC,38,14,12,12,54,42,48,-6,1.42,36.8,1.11
+8,Brighton & Hove Albion FC,38,14,11,13,53,52,46,6,1.39,36.8,1.37
+9,Brentford FC,38,14,11,13,53,55,52,3,1.39,36.8,1.45
+10,Chelsea FC,38,14,10,14,52,58,52,6,1.37,36.8,1.53
+11,Fulham FC,38,15,7,16,52,47,51,-4,1.37,39.5,1.24
+12,Newcastle United FC,38,14,7,17,49,53,55,-2,1.29,36.8,1.39
+13,Everton FC,38,13,10,15,49,47,50,-3,1.29,34.2,1.24
+14,Leeds United FC,38,11,14,13,47,49,56,-7,1.24,28.9,1.29
+15,Crystal Palace FC,38,11,12,15,45,41,51,-10,1.18,28.9,1.08
+16,Nottingham Forest FC,38,11,11,16,44,48,51,-3,1.16,28.9,1.26
+17,Tottenham Hotspur FC,38,10,11,17,41,48,57,-9,1.08,26.3,1.26
+18,West Ham United FC,38,10,9,19,39,46,65,-19,1.03,26.3,1.21
+19,Burnley FC,38,4,10,24,22,38,75,-37,0.58,10.5,1.0
+20,Wolverhampton Wanderers FC,38,3,11,24,20,27,68,-41,0.53,7.9,0.71

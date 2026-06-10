@@ -113,8 +113,24 @@ CHART_LAYOUT = dict(
     plot_bgcolor="rgba(0,0,0,0)",
     font=dict(family="'DM Sans', sans-serif", color=COLOURS["text"], size=13),
     margin=dict(l=20, r=20, t=40, b=20),
-
-
+    xaxis=dict(
+        gridcolor=COLOURS["border"],
+        linecolor=COLOURS["border"],
+        tickcolor=COLOURS["border"],
+        showgrid=True,
+        zeroline=False,
+    ),
+    yaxis=dict(
+        gridcolor=COLOURS["border"],
+        linecolor=COLOURS["border"],
+        tickcolor=COLOURS["border"],
+        showgrid=True,
+        zeroline=False,
+    ),
+    legend=dict(
+        bgcolor="rgba(0,0,0,0)",
+        bordercolor=COLOURS["border"],
+    ),
     hoverlabel=dict(
         bgcolor=COLOURS["surface2"],
         bordercolor=COLOURS["border"],
@@ -323,7 +339,7 @@ app.layout = html.Div([
                     dcc.Graph(
                         id="goals-chart",
                         config={"displayModeBar": False},
-                        style={"height": "600px"},
+                        style={"height": "380px"},
                     )
                 ]),
                 style={"flex": "1", "minWidth": "340px"}
@@ -335,7 +351,7 @@ app.layout = html.Div([
                     dcc.Graph(
                         id="scorers-chart",
                         config={"displayModeBar": False},
-                        style={"height": "600px"},
+                        style={"height": "380px"},
                     )
                 ]),
                 style={"flex": "1", "minWidth": "340px"}
@@ -352,7 +368,7 @@ app.layout = html.Div([
                     dcc.Graph(
                         id="home-away-chart",
                         config={"displayModeBar": False},
-                        style={"height": "600px"},
+                        style={"height": "360px"},
                     )
                 ]),
                 style={"flex": "1", "minWidth": "340px"}
@@ -490,36 +506,26 @@ def update_match_charts(selected_team, matchday_range):
 
     # ── Goals Scored vs Conceded ───────────────────────────────────────────
     # Aggregate goals for and against per team from filtered matches
-    if selected_team != "ALL":
-        # Per-opponent breakdown for a specific team
-        # When selected team is at home, opponent is away_team_name
-        home_games = filtered[filtered["home_team_name"] == selected_team].copy()
-        home_games = home_games.groupby("away_team_name").agg(
-            gf=("home_score", "sum"), ga=("away_score", "sum")
-        ).reset_index().rename(columns={"away_team_name": "team"})
+    home_agg = filtered.groupby("home_team_name").agg(
+        gf=("home_score", "sum"), ga=("away_score", "sum")
+    ).reset_index().rename(columns={"home_team_name": "team"})
 
-        # When selected team is away, opponent is home_team_name
-        away_games = filtered[filtered["away_team_name"] == selected_team].copy()
-        away_games = away_games.groupby("home_team_name").agg(
-            gf=("away_score", "sum"), ga=("home_score", "sum")
-        ).reset_index().rename(columns={"home_team_name": "team"})
+    away_agg = filtered.groupby("away_team_name").agg(
+        gf=("away_score", "sum"), ga=("home_score", "sum")
+    ).reset_index().rename(columns={"away_team_name": "team"})
 
-        goals_agg = pd.concat([home_games, away_games]).groupby("team").sum().reset_index()
-    else:
-        # Overall goals per team across all matches
-        home_agg = filtered.groupby("home_team_name").agg(
-            gf=("home_score", "sum"), ga=("away_score", "sum")
-        ).reset_index().rename(columns={"home_team_name": "team"})
-
-        away_agg = filtered.groupby("away_team_name").agg(
-            gf=("away_score", "sum"), ga=("home_score", "sum")
-        ).reset_index().rename(columns={"away_team_name": "team"})
-
-        goals_agg = pd.concat([home_agg, away_agg]).groupby("team").sum().reset_index()
-    goals_agg["gd"] = goals_agg["gf"] - goals_agg["ga"]
+    goals_agg = pd.concat([home_agg, away_agg]).groupby("team").sum().reset_index()
     goals_agg = goals_agg.sort_values("gf", ascending=True)
 
     goals_fig = go.Figure()
+    goals_fig.add_trace(go.Bar(
+        y=goals_agg["team"],
+        x=goals_agg["gf"],
+        name="Goals Scored",
+        orientation="h",
+        marker_color=COLOURS["accent2"],
+        hovertemplate="%{y}: %{x} goals scored<extra></extra>",
+    ))
     goals_fig.add_trace(go.Bar(
         y=goals_agg["team"],
         x=-goals_agg["ga"],
@@ -529,40 +535,6 @@ def update_match_charts(selected_team, matchday_range):
         hovertemplate="%{y}: %{customdata} goals conceded<extra></extra>",
         customdata=goals_agg["ga"],
     ))
-    goals_fig.add_trace(go.Bar(
-        y=goals_agg["team"],
-        x=goals_agg["gf"],
-        name="Goals Scored",
-        orientation="h",
-        marker_color=COLOURS["accent2"],
-        hovertemplate="%{y}: %{x} goals scored<extra></extra>",
-    ))
-
-    # Add overall totals bar at the top when a specific team is selected
-    if selected_team != "ALL":
-        total_gf = int(goals_agg["gf"].sum())
-        total_ga = int(goals_agg["ga"].sum())
-        overall_label = f"── TOTAL ({selected_team}) ──"
-
-        goals_fig.add_trace(go.Bar(
-            y=[overall_label],
-            x=[total_gf],
-            name="Total Scored",
-            orientation="h",
-            marker_color=COLOURS["accent2"],
-            showlegend=False,
-            hovertemplate=f"Total Scored: {total_gf}<extra></extra>",
-        ))
-        goals_fig.add_trace(go.Bar(
-            y=[overall_label],
-            x=[-total_ga],
-            name="Total Conceded",
-            orientation="h",
-            marker_color=COLOURS["danger"],
-            showlegend=False,
-            hovertemplate=f"Total Conceded: {total_ga}<extra></extra>",
-        ))
-
     goals_fig.update_layout(
         **CHART_LAYOUT,
         barmode="relative",
@@ -573,14 +545,13 @@ def update_match_charts(selected_team, matchday_range):
     goals_fig.update_xaxes(tickformat="d", zeroline=True, zerolinecolor=COLOURS["border"], zerolinewidth=2)
 
     # ── Home vs Away Win Rate ──────────────────────────────────────────────
-    # Always use full matches_df so chart never changes with team selection
-    home_stats = matches_df.groupby("home_team_name").agg(
+    home_stats = filtered.groupby("home_team_name").agg(
         home_played=("match_id", "count"),
         home_wins=("home_win", "sum"),
     ).reset_index().rename(columns={"home_team_name": "team"})
     home_stats["home_win_rate"] = (home_stats["home_wins"] / home_stats["home_played"] * 100).round(1)
 
-    away_stats = matches_df.groupby("away_team_name").agg(
+    away_stats = filtered.groupby("away_team_name").agg(
         away_played=("match_id", "count"),
         away_wins=("away_win", "sum"),
     ).reset_index().rename(columns={"away_team_name": "team"})
@@ -653,24 +624,7 @@ def update_scorers_chart(selected_team):
     if selected_team != "ALL":
         df = df[df["team_name"] == selected_team]
         if df.empty:
-            # No scorers found for this team — show empty chart with message
-            fig = go.Figure()
-            fig.add_annotation(
-                text="No scorer data available for this team",
-                xref="paper", yref="paper",
-                x=0.5, y=0.5,
-                showarrow=False,
-                font=dict(size=14, color=COLOURS["text_muted"]),
-                align="center",
-            )
-            fig.update_layout(**CHART_LAYOUT)
-            return fig
-        else:
-            # Show top 3 scorers for a specific team
-            df = df.nlargest(3, "goals")
-    else:
-        # Show top 10 scorers for the full league
-        df = df.nlargest(10, "goals")
+            df = scorers_df.copy()
 
     df = df.sort_values("goals", ascending=True)
 
