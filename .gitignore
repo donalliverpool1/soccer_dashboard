@@ -4,3 +4,4 @@ __pycache__/
 .env.bak
 .ipynb_checkpoints/
 .DS_Store
+*.db
