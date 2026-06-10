@@ -70,14 +70,20 @@ Then open: http://127.0.0.1:8050
 
 ## Screenshots
 
-### All Teams View
-![All Teams](images/screenshots/Screenshot 2026-06-07 at 11.21.31 PM.png)
+# All Teams View
+![All Teams](screenshots/Screenshot 2026-06-07 at 11.21.31 PM.png)
 
-### League Standings
-![League Standings](images/screenshots/Screenshot 2026-06-07 at 11.21.47 PM.png)
+# Home vs Away Win Rate (%) & Match Results
+![Home vs Away Win Rate (%) & Match Results](screenshots/Screenshot 2026-06-07 at 11.21.39 PM.png)
 
-### Team Filter View
-![Team Filter](images/screenshots/Screenshot 2026-06-07 at 11.22.06 PM.png)
+# League Standings
+![League Standings](screenshots/Screenshot 2026-06-07 at 11.21.47 PM.png)
+
+# Team Filter View
+![Team Filter](screenshots/Screenshot 2026-06-07 at 11.22.06 PM.png)
+
+# Team Filter: Home vs Away Win Rate (%) & Match Results
+![Team Filter: Home vs Away Win Rate (%) & Match Results](screenshots/Screenshot 2026-06-07 at 11.23.20 PM.png)
 
 ---
 
